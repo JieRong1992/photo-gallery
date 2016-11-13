@@ -1,3 +1,4 @@
+//测试用firefox 15
 require('normalize.css/normalize.css');
 require('styles/App.scss');
 
@@ -54,9 +55,9 @@ class ImgFigure extends React.Component{
     }
 
     if(this.props.arrange.rotate){
-      (['-moz-','-ms-','-webkit-','']).forEach((value)=>{
-        styleObj[value+'transform']='rotate('+this.props.arrange.rotate+'deg)';
-      })
+      (['MozT','msT','OT','WebkitT','t']).forEach((value,index)=>{
+        styleObj[value+'ransform']='rotate('+this.props.arrange.rotate+'deg)';
+      });
     }
     if(this.props.arrange.isCenter){
       styleObj.zIndex = 11;
@@ -82,6 +83,38 @@ class ImgFigure extends React.Component{
   }
 }
 
+class ControllerUnit extends React.Component{
+  constructor(props){
+    super(props);
+    this.handleClick=this.handleClick.bind(this);
+
+  }
+  handleClick(e){
+    //如果点击的的是当前选中态的按钮,则翻转图片,否则将对应的图片居中
+    if(this.props.arrange.isCenter){
+      this.props.inverse();
+    } else {
+      this.props.center();
+    }
+    e.preventDefault();
+    e.stopPropagation();
+  }
+  render(){
+    var controllerUnitClassName='controller-unit';
+    //如果对应的是居中的图片, 显示控制按钮的居中态
+    if(this.props.arrange.isCenter) {
+      controllerUnitClassName += ' is-center';
+
+      //如果同时对应的是翻转图片, 显示控制按钮的翻转态
+      if (this.props.arrange.isInverse) {
+        controllerUnitClassName += ' is-inverse';
+      }
+    }
+    return(<span className ={controllerUnitClassName} onClick={this.handleClick}></span>);
+
+}
+
+}
 
 /// management
 class AppComponent extends React.Component {
@@ -207,9 +240,11 @@ class AppComponent extends React.Component {
      * @param index 需要悲剧中的照片的图片对应的图片信息数组的index值
      * @return {function}
      * */
-    center(index){
-      return ()=> {this.rearrange(index);}
+  center(index) {
+    return() => {
+      this.rearrange(index);
     }
+  }
 
   componentDidMount(){
     //拿到舞台的大小
@@ -272,6 +307,10 @@ class AppComponent extends React.Component {
                                  ref={'imgFigure'+index}
                                  arrange={this.state.imgsArrangeArr[index]}
                                  inverse={this.inverse(index)} center={this.center(index)}/>);
+      controllerUnits.push(<ControllerUnit key={index}
+                                           arrange={this.state.imgsArrangeArr[index]}
+                                           inverse={this.inverse(index)} c
+                                           center={this.center(index)}/>);
     });
 
     return (
