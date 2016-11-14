@@ -38,7 +38,7 @@ function getDefaultModules() {
       },
       {
         test: /\.less/,
-        loader: 'style-loader!css-loader!postcss-loader!less-loader'
+        loader: 'style-loader!css-loader!less-loader'
       },
       {
         test: /\.styl/,
@@ -62,7 +62,10 @@ function getDefaultModules() {
 
 module.exports = {
   srcPath: srcPath,
-  publicPath: 'assets/',
+  publicPath: 'photo-gallery/assets/',
   port: dfltPort,
-  getDefaultModules: getDefaultModules
+  getDefaultModules: getDefaultModules,
+  postcss: function () {
+    return [];
+  }
 };
