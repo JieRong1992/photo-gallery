@@ -10,6 +10,9 @@ const path = require('path');
 const srcPath = path.join(__dirname, '/../src');
 const dfltPort = 8000;
 
+var precss = require('precss');
+var autoprefixer = require('autoprefixer');
+
 /**
  * Get the default modules object for webpack
  * @return {Object}
@@ -64,5 +67,8 @@ module.exports = {
   srcPath: srcPath,
   publicPath: 'assets/',
   port: dfltPort,
-  getDefaultModules: getDefaultModules
+  getDefaultModules: getDefaultModules,
+  postcss: function () {
+    return [precss, autoprefixer];
+  }
 };
